@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Add Video</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Video</h1>
+        <form action="">
+            <div class="form-group">
+                <label for="ytID">Youtube ID</label>
+                <input type="text" class="form-control" id="ytID" placeholder="Youtube ID">
+            </div>
+            <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title" placeholder="Add Title">
+                </div>
+                <div class="form-group"><button type="submit" class="btn btn-primary">Submit</button></div>
+            
+        </form>
+    </div>
+</body>
+
+<script>
+
+
+let button = document.querySelector('button');
+button.addEventListener('click', (e) => {
+e.preventDefault();
+
+let ytid=document.querySelector("#ytID").value;
+let imageURL = `http://i3.ytimg.com/vi/${ytid}/hqdefault.jpg`;
+let embedURL = `https://www.youtube.com/embed/${ytid}`;
+let title = document.querySelector('#title').value;
+
+let data = {TITLE:title, LINK:embedURL, PICTURE: imageURL}
+fetch('http://localhost:9080/api/addData',{
+    method:'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+}).then(resp =>console.log(resp))
+})
+
+
+
+</script>
+</html>

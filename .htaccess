@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+
+    RewriteEngine on
+    RewriteCond %{HTTP_HOST} ^localhost:9080$ [NC,OR]
+    RewriteCond %{HTTP_HOST} ^localhost:9080$
+    RewriteCond %{REQUEST_URI} !backend/
+    RewriteRule (.*) /backend/$1 [L]
+
+    Options -Indexes
+    Options -Multiviews
+
+</IfModule>

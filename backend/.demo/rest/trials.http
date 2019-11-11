@@ -1,0 +1,28 @@
+# GET http://localhost:9080/Api/showAll
+
+###
+
+# GET http://localhost:9080/Api/showSingle/2
+
+###
+
+# POST http://localhost:9080/API/addData
+# content-type: application/json
+
+# {
+#     "FNAME": "Tommy",
+#     "LNAME": "Stephens",
+#     "DOB": "1954-04-01"
+# }
+
+# PUT http://localhost:9080/API/updateData/2
+# content-type: application/json
+
+# {
+#     "FNAME": "Jackson",
+#     "LNAME": "Stephens",
+#     "DOB": "1954-04-01"
+# }
+
+# DELETE http://localhost:9080/API/deleteData/2
+# content-type: application/json
