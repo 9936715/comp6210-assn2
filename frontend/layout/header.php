@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/site.css">
     <link id="light-css" rel="stylesheet" href="css/light.css">
     <link id="dark-css" rel="stylesheet" href="css/dark.css">  
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <title><?php echo $title; ?> - Profiles</title>
 </head>
 <body>
@@ -40,7 +41,7 @@
                       </li>
                       <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="admin-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown02">
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown03">
                           <a id="edit-profiles" class="dropdown-item" href="index.php">Edit Profiles</a>
                           <div class="dropdown-divider"></div>
                           <a onclick="logout()" class="dropdown-item" href="#">Logout</a>

@@ -10,18 +10,18 @@ include_once('layout/header.php');
                     <div class="form-group row">
                         <label for="username" class="col-md-3 col-form-label">Username</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" id="username" name="username">
+                            <input type="text" class="form-control" id="username" name="username" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="article5" class="col-md-3 col-form-label">Password</label>
                         <div class="col-md-9">
-                            <input type="password" class="form-control" id="password" name="password">
+                            <input type="password" class="form-control" id="password" name="password" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-md-3 "></div>
-                        <div class="col-md-9 ">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-9">
                             <button type="submit" class="btn btn-primary" id="login-button">Login</button>
                         </div>
                     </div>
@@ -52,15 +52,15 @@ fetch('http://localhost:9080/profiles/login',{
                 document.querySelector("#error-message").classList.add("alert-danger");
             }
             else{
-                localStorage.id = data["MSG"][0]["id"];
-                localStorage.username = data["MSG"][0]["username"];
-                localStorage.name = data["MSG"][0]["name"];
-                localStorage.isLoggedIn = 1;
-                if(localStorage.username == "admin"){
+                sessionStorage.id = data["MSG"][0]["id"];
+                sessionStorage.username = data["MSG"][0]["username"];
+                sessionStorage.name = data["MSG"][0]["name"];
+                sessionStorage.isLoggedIn = 1;
+                if(sessionStorage.username == "admin"){
                     window.location.href = "index.php";
                 }
                 else{
-                window.location.href = `profile.php?id=${localStorage.id}`;
+                window.location.href = `profile.php?id=${sessionStorage.id}`;
                 }
             }
         });

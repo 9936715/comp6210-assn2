@@ -10,27 +10,29 @@ include_once('layout/header.php');
      </div>
 
 <script>
+    getProfiles();
     
-  fetch('http://localhost:9080/profiles/getall')
+  async function getProfiles(){  
+  let promise = fetch('http://localhost:9080/profiles/getall')
         .then(response=>response.json())
         .then(data=>{
-
             let html = "";
-            console.log(data);
-            console.log(localStorage.username);
+            console.log(sessionStorage.username);
             for(let i = 0; i < data["MSG"].length; i++){
                 html += `<div class="col-lg-4 col-md-6"><div class="profile-home"><a href="profile.php?id=${data["MSG"][i]["id"]}">
             <img src="${data["MSG"][i]["pic"]}" alt="profile-pic" class="img-fluid rounded-circle profile-home-img"/>
             <h3>${data["MSG"][i]["name"]}</h3></a>`;
-            if(localStorage.username == "admin"){
-                html+=`<div class="text-center admin-edit-btn"><a class="btn-block btn btn-primary" href="edit-profile?id=${data["MSG"][i]['id']}">Edit</a></div>`;
+            if(sessionStorage.username == "admin"){
+                html+=`<div class="text-center admin-edit-btn"><a class="btn-block btn btn-primary" href="edit-profile.php?id=${data["MSG"][i]['id']}">Edit</a></div>`;
             }
             html+=`</div></div>`;
             }
-
             document.querySelector('#app').innerHTML = html;
         });
-
+        console.log(promise);
+        let result = await promise;
+        console.log(`Result: ${result}`);
+    }
 </script>
 
 

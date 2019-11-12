@@ -49,84 +49,91 @@ public function login($data){
 }
 
 public function logout($data){
-  $id = $data["ID"];
   $this->db->query('UPDATE profiles SET logged_in = 0 WHERE id = :id');
-      $this->db->bind(':id', $id);
+      $this->db->bind(':id', $data["ID"]);
       if($this->db->execute()){
-        return "logged out";
+        return true;
       }
       else{
-        return null;
+        return false;
       }
 }
 
 public function isLoggedIn($data){
-  $id = $data["ID"];
+  
   $username = $data["USERNAME"];
   $this->db->query('SELECT logged_in FROM profiles WHERE id = :id AND username = :username');
-      $this->db->bind(':id', $id);
+      $this->db->bind(':id', $data["ID"]);
       $this->db->bind(':username', $username);
       $result = $this->db->resultSet();
-      return $result;
+      if($result[0]["logged_in"]==1)
+      return true;
+      else
+      return false;
+}
+
+public function updateProfile($data){
+  $this->db->query('UPDATE profiles SET pic = :pic, name = :name, github = :github, facebook = :facebook, linkedin = :linkedin, twitter = :twitter, youtube = :youtube, article1 = :article1, article2 = :article2, article3 = :article3, article4 = :article4, article5 = :article5 WHERE id = :id');
+  $this->db->bind(':id', $data["ID"]);
+  $this->db->bind(':name', $data["NAME"]);
+  $this->db->bind(':pic', $data["PIC"]);
+  $this->db->bind(':github', $data["GITHUB"]);
+  $this->db->bind(':facebook', $data["FACEBOOK"]);
+  $this->db->bind(':linkedin', $data["LINKEDIN"]);
+  $this->db->bind(':youtube', $data["YOUTUBE"]);
+  $this->db->bind(':twitter', $data["TWITTER"]);
+  $this->db->bind(':article1', $data["ARTICLE1"]);
+  $this->db->bind(':article2', $data["ARTICLE2"]);
+  $this->db->bind(':article3', $data["ARTICLE3"]);
+  $this->db->bind(':article4', $data["ARTICLE4"]);
+  $this->db->bind(':article5', $data["ARTICLE5"]);
+
+  if($this->db->execute()) {
+    return true;
+} else {
+    return false;
+}
+}
+
+public function checkUsername($data){
+  $this->db->query("SELECT username FROM profiles WHERE username = :username");
+  $this->db->bind(':username', $data["USERNAME"]);
+  $result = $this->db->resultSet();
+
+  if($result != null){
+    if ($result[0]["username"] == $data["USERNAME"]) {
+        return true;
+    }}
+  else{
+      return false;
+  }
+}
+
+public function signUp($data){
+  $this->db->query('INSERT INTO profiles (username, password, pic, name, github, facebook, linkedin, twitter, youtube, article1, article2, article3, article4, article5) VALUES (:username, :password, :pic, :name, :github, :facebook, :linkedin, :twitter, :youtube, :article1, :article2, :article3, :article4, :article5)');
+  $this->db->bind(':username', $data["USERNAME"]);
+  $this->db->bind(':password', $data["PASSWORD"]);
+  $this->db->bind(':name', $data["NAME"]);
+  $this->db->bind(':pic', $data["PIC"]);
+  $this->db->bind(':github', $data["GITHUB"]);
+  $this->db->bind(':facebook', $data["FACEBOOK"]);
+  $this->db->bind(':linkedin', $data["LINKEDIN"]);
+  $this->db->bind(':youtube', $data["YOUTUBE"]);
+  $this->db->bind(':twitter', $data["TWITTER"]);
+  $this->db->bind(':article1', $data["ARTICLE1"]);
+  $this->db->bind(':article2', $data["ARTICLE2"]);
+  $this->db->bind(':article3', $data["ARTICLE3"]);
+  $this->db->bind(':article4', $data["ARTICLE4"]);
+  $this->db->bind(':article5', $data["ARTICLE5"]);
+
+  if($this->db->execute()) {
+    return true;
+} else {
+    return false;
+}
 }
 
 
-//-------------------------------------------------
-    //exaple: db data - insert
-    public function add($data) {
 
-      //Adding data to database
-      $this->db->query('INSERT INTO  profiles (TITLE, LINK, PICTURE) VALUES (:title, :link, :picture)');
-
-      //Binding Variables
-      $this->db->bind(':title', $data["TITLE"]);
-      $this->db->bind(':link', $data["LINK"]);
-      $this->db->bind(':picture', $data["PICTURE"]);
-
-      //Return true or false, based on if query is successful or not
-      if($this->db->execute()) {
-          return true;
-      } else {
-          return false;
-      }
-    }
-
-    //exaple: db data - update
-    public function update($data, $id) {
-
-      //Adding data to database
-      $this->db->query('UPDATE profiles SET TITLE = :title, LINK = :link, PICTURE = :picture
-       WHERE ID = :id');
-
-      //Binding Variables
-      $this->db->bind(':id', $id);
-      $this->db->bind(':title', $data["TITLE"]);
-      $this->db->bind(':link', $data["LINK"]);
-      $this->db->bind(':picture', $data["PICTURE"]);
-
-      //Return true or false, based on if query is successful or not
-      if($this->db->execute()) {
-          return true;
-      } else {
-          return false;
-      }
-    }
-
-    //exaple: db data - delete
-    public function delete($id) {
-
-      //Adding data to database
-      $this->db->query('DELETE FROM profiles WHERE ID = :id');
-
-      //Binding Variables
-      $this->db->bind(':id', $id);
-
-      //Return true or false, based on if query is successful or not
-      if($this->db->execute()) {
-          return true;
-      } else {
-          return false;
-      }
-    }
   }
 ?>

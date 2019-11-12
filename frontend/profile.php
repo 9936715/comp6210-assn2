@@ -45,28 +45,22 @@ include_once('layout/header.php');
       <div class="col">
         <h4 class="profile-page-heading">Feedback</h4>
         <form>
-            <div class="form-group row">
-                <label for="name" class="col-md-3  col-form-label">Name</label>
-                <div class="col-md-9 ">
-                  <input type="text" class="form-control" id="name" name="name">
-                </div>
-              </div>
           <div class="form-group row">
             <label for="email" class="col-md-3  col-form-label">Email</label>
             <div class="col-md-9 ">
-              <input type="email" class="form-control" id="email" name="email">
+              <input type="email" class="form-control" id="email" name="email" required>
             </div>
           </div>
           <div class="form-group row">
             <label for="message" class="col-md-3  col-form-label">Message</label>
             <div class="col-md-9 ">
-              <textarea name="message" rows="5" class="form-control" id="message"></textarea>
+              <textarea name="message" rows="5" class="form-control" id="message" required></textarea>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-3 "></div>
             <div class="col-md-9 ">
-              <button type="submit" class="btn btn-primary" name="submitFeedback">Submit Feedback</button>
+              <button type="button" class="btn btn-primary" name="submit-feedback" onclick="submitFeedback()">Submit Feedback</button>
             </div>
           </div>
         </form>
@@ -77,6 +71,10 @@ include_once('layout/header.php');
 
 let getID = parseInt((new URL(document.location)).searchParams.get('id'));
 
+getProfile();
+
+async function getProfile(){
+let promise = 
 fetch(`http://localhost:9080/profiles/getprofile/${getID}`)
         .then(response=>response.json())
         .then(data=>{
@@ -102,12 +100,33 @@ fetch(`http://localhost:9080/profiles/getprofile/${getID}`)
             document.querySelector("#article4").href = data["MSG"][0]["article4"]
             document.querySelector("#article5").innerHTML = data["MSG"][0]["article5"]
             document.querySelector("#article5").href = data["MSG"][0]["article5"]
-
         });
 
+        let result = await promise;
+        console.log(result);
+      }
 
+async function submitFeedback(){
+  console.log("submitFeedback");
+let email = document.querySelector("#email").value;
+let message = $('#message').val();
+let postData = {ID:getID, MESSAGE:message, EMAIL:email};
+let promise = 
+fetch('http://localhost:9080/messages/submitfeedback',{
+    method:'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(postData)
+}).then(response=>response.json())
+.then(resp=>{
+  if(resp["MSG"]){
+    alert("Feedback submitted");
+  }
+});
+let result = await promise;
+}
         </script>
-
     <?php
 include_once ('layout/footer.php');
 ?>

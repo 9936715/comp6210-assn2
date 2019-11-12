@@ -45,45 +45,30 @@ class Profiles extends Controller {
   }
 
   public function updateProfile(){
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if($this->rest->updateProfile($data)) {
+        echo json_encode(array("MSG" => true, "Data" => $data, "CODE" => 204));
+    } else {
+        echo json_encode(array("MSG" => false, "Data" => $data));
+    }
 
   }
 
-  public function signUp(){
-    
+  public function checkUsername($data)
+  {
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    echo json_encode(["MSG" => $this->rest->checkUsername($data)]);
   }
 
-  // --------------------------------- 
-  public function addData() {
+  public function signUp($data){
       $data = json_decode(file_get_contents("php://input"), true);
 
-      if($this->rest->add($data)) {
-          echo json_encode(array("MSG" => "Record Added Successfully", "Data" => $data, "CODE" => 201));
+      if ($this->rest->signUp($data)) {
+          echo json_encode(array("MSG" => "true", "Data" => $data, "CODE" => 201));
       } else {
-          echo json_encode(array("MSG" => "Record was not added", "Data" => $data));
+          echo json_encode(array("MSG" => "false", "Data" => $data));
       }
-  }
-
-  public function updateData() {
-
-    $data = json_decode(file_get_contents("php://input"), true);
-
-    $id = $data["ID"];
-
-    if($this->rest->update($data, $id)) {
-        echo json_encode(array("MSG" => "Record Updated Successfully", "Data" => $data, "CODE" => 204));
-    } else {
-        echo json_encode(array("MSG" => "Record was not updated", "Data" => $data));
-    }
-  }
-
-  public function deleteData() {
-
-    $data = json_decode(file_get_contents("php://input"), true);
-
-    if($this->rest->delete(getIdFromURL())) {
-        echo json_encode(array("MSG" => "Record Deleted Successfully", "Data" => $data, "CODE" => 202));
-    } else {
-        echo json_encode(array("MSG" => "Record was not deleted", "Data" => $data));
-    }
   }
 }

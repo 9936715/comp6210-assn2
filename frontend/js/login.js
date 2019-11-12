@@ -1,13 +1,13 @@
-let id = localStorage.id;
-let username = localStorage.username;
-let name = localStorage.name;
-loggedIn = localStorage.isLoggedIn;
+let id = sessionStorage.id;
+let username = sessionStorage.username;
+let name = sessionStorage.name;
+loggedIn = sessionStorage.isLoggedIn;
 
 if(loggedIn){
 checkLogin(id, username);
 }
 
-console.log(loggedIn);
+console.log(`Logged in: ${loggedIn}`);
 
 if(loggedIn == 1){
     document.querySelector('#login').style.display = "none";
@@ -27,9 +27,9 @@ else{
     document.querySelector('#admin-dropdown').style.display = "none";
 }
 
-function logout(){
+async function logout(){
 let postData = {ID:id};
-
+let promise = 
 fetch('http://localhost:9080/profiles/logout',{
     method:'POST',
     headers: {
@@ -37,25 +37,22 @@ fetch('http://localhost:9080/profiles/logout',{
     },
     body: JSON.stringify(postData)
 }).then(response=>response.json())
-        .then(data=>{
-            if(data["MSG"] === undefined || data["MSG"].length == 0)
+        .then(resp=>{
+            if(resp["MSG"])
             {
-                console.log("Error while logging out");
-            }
-            else{
-                removeLocalLogin();
+                removeSessionLogin();
                 window.location.href = "index.php";
+                console.log(`Logged out: ${resp["MSG"]}`);
             }
         });
-
+let result = await promise;
+console.log(result);
   }
 
-
-
-  function checkLogin(id, username){
+  async function checkLogin(id, username){
 
     let postData = {ID:id, USERNAME:username};
-
+let promise = 
     fetch('http://localhost:9080/profiles/isloggedin',{
         method:'POST',
         headers: {
@@ -63,28 +60,23 @@ fetch('http://localhost:9080/profiles/logout',{
         },
         body: JSON.stringify(postData)
     }).then(response=>response.json())
-            .then(data=>{
-                if(data["MSG"] === undefined || data["MSG"].length == 0)
-                {
-                    console.log("Did not return any data when checking if logged in");
-                    removeLocalLogin();
-                }
-                else{
-                    if(data["MSG"][0]["logged_in"] == 1){
-                        console.log('logged in')
-                        localStorage.isLoggedIn = 1;       
+            .then(resp=>{
+                    if(resp["MSG"]){
+                        console.log('Logged in')
+                        sessionStorage.isLoggedIn = 1;       
                     }
                     else{
-                        console.log("Already logged out");
-                        removeLocalLogin();
+                        console.log("Not logged in");
+                        removeSessionLogin();
                     }
-                }
             });
+            let result = await promise;
+            console.log(result);
   }
 
-  function removeLocalLogin(){
-    localStorage.removeItem("id");
-    localStorage.removeItem("name");
-    localStorage.removeItem("username");
-    localStorage.removeItem("isLoggedIn");
+  function removeSessionLogin(){
+    sessionStorage.removeItem("id");
+    sessionStorage.removeItem("name");
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("isLoggedIn");
 }
